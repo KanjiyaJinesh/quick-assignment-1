@@ -1,9 +1,13 @@
 import myJson from './data.json' assert {type: 'json'};
 
-let currentID = 0;
-const totalItems = myJson.length;
+let currentID = 0;                  // hold the id of the current image in the right panel
+const totalItems = myJson.length;   // Total items in the JSON file.
 const leftColumn = document.querySelector(".grid-items-left");
 
+/*
+    Function adjustText():
+    Adjust the input text in the maximum possible length
+ */
 const adjustText = function (text, maxPossibleLength = 20) {
     if (text.length > maxPossibleLength) {
         let removeLen = text.length - maxPossibleLength + 3;
@@ -14,7 +18,16 @@ const adjustText = function (text, maxPossibleLength = 20) {
     return text;
 }
 
-const onClick = function (event, item) {
+/*
+    Function changeImage():
+    Takes the ID of new selected image in the input
+    Set the image and the title in the right coloumn to the new selected image
+    Remove class 'active' from old image
+    Add class 'active' to new image selected
+    Update currentID to id of crrent image
+*/
+const changeImage = function (newID) {
+    const item = myJson[newID];
     document.querySelector(".image").setAttribute("src", item.previewImage);
     document.getElementsByName("imageName")[0].value = item.title;
     const olditem = document.getElementById(currentID);
@@ -24,6 +37,11 @@ const onClick = function (event, item) {
     currentID = item.id;
 }
 
+/*
+    For each objet in data object in 'data.json'
+    Insert new elemet to left column with image and title
+    Add 'click'-eventListner to each element and redirect the event to chageImage
+*/
 myJson.forEach((item) => {
     let insertItem = document.createElement("div");
     insertItem.classList.add("grid-item-left");
@@ -33,8 +51,8 @@ myJson.forEach((item) => {
         <p> ${adjustText(item.title)} </p>
     `;
 
-    insertItem.addEventListener("click", (event) => {
-        onClick(event, item);
+    insertItem.addEventListener("click", () => {
+        changeImage(item.id);
     }
         , false);
 
@@ -42,44 +60,38 @@ myJson.forEach((item) => {
     leftColumn.append(insertItem);
 });
 
-const showCurrentImage = function () {
-    const currentItem = myJson.find((item) =>
-        item.id === currentID
-    );
-    onClick(null, currentItem);
-}
-showCurrentImage();
+/*
+    Select the first image as the default.
+*/
+changeImage(0);
 
+/*
+    Add eventListner to listen the ArrowUp and ArrowDown key
+    Calculate the newID of the Image
+    Change the image of right coloumn to the newly calculated ID.
+*/
 document.body.addEventListener("keydown", (event) => {
+    let newID;
     if (event.key === "ArrowDown") {
-        const olditem = document.getElementById(currentID);
-        olditem.classList.remove("active");
-        currentID = (currentID + 1) % totalItems;
-        const newitem = document.getElementById(currentID);
-        newitem.classList.add("active");
-        showCurrentImage();
+        newID = (currentID + 1) % totalItems;
     }
     else if (event.key === "ArrowUp") {
-        const olditem = document.getElementById(currentID);
-        olditem.classList.remove("active");
         if (currentID === 0) {
-            currentID = totalItems - 1;
+            newID = totalItems - 1;
         } else {
-            currentID = (currentID - 1) % totalItems;
+            newID = (currentID - 1) % totalItems;
         }
-        const newitem = document.getElementById(currentID);
-        newitem.classList.add("active");
-        showCurrentImage();
     }
+    changeImage(newID);
 });
 
+/*
+    Add 'change'-eventListener to the inpt field of the imageName
+    Update the imageTitle in data.json
+    And reflet the updated imageTitle in the image list in the left coloumn
+*/
 const imageText = document.getElementsByName("imageName");
-imageText[0].addEventListener('change', (event) => {
-    console.log(imageText[0].value);
-    myJson.forEach((item) => {
-        if (item.id === currentID) {
-            item.title = imageText[0].value;
-        }
-    });
+imageText[0].addEventListener('change', () => {
+    myJson[currentID].title = imageText[0].value;
     document.querySelector(".active p").innerText = adjustText(imageText[0].value);
 });
