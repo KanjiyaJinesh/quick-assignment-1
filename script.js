@@ -3,7 +3,6 @@ import myJson from './data.json' assert {type: 'json'};
 let currentID = 0;
 const totalItems = myJson.length;
 const leftColumn = document.querySelector(".grid-items-left");
-const rightColumn = document.querySelector(".grid-items-right");
 
 const adjustText = function (text, maxPossibleLength = 20) {
     if (text.length > maxPossibleLength) {
@@ -52,8 +51,6 @@ const showCurrentImage = function () {
 showCurrentImage();
 
 document.body.addEventListener("keydown", (event) => {
-    // event.code holds the current key pressed:
-    // Test for KeyD (the "d" key)
     if (event.key === "ArrowDown") {
         const olditem = document.getElementById(currentID);
         olditem.classList.remove("active");

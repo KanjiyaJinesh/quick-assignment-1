@@ -1,19 +1,13 @@
-body {
+* {
     margin: 0;
     font-family: "Work Sans", sans-serif;
 }
 
-h1 {
-    font-family: "Oswald", sans-serif;
-}
-
-figure,
-p {
-    margin: 0;
-}
-
 header h1 {
     text-align: center;
+    margin: 1em 0;
+    font-family: "Oswald", sans-serif;
+
 }
 
 .maincontent {
@@ -50,10 +44,9 @@ header h1 {
     margin-right: 10px;
 }
 
-.grid-items-right img {
-    object-fit: cover;
+.image-container img {
     width: 600px;
-    height: 750px;
+    height: 700px;
     object-fit: cover;
     align-self: center;
     border-radius: 20px;
@@ -71,7 +64,7 @@ header h1 {
 
 input {
     margin-top: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     border: 0px;
     width: 100%;
     font-size: 20px;
