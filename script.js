@@ -1,6 +1,6 @@
 import myJson from './data.json' assert {type: 'json'};
 
-let currentID = 0;                  // hold the id of the current image in the right panel
+let currentID = 0;                  // hold the id of the current selected image
 const totalItems = myJson.length;   // Total items in the JSON file.
 const leftColumn = document.querySelector(".grid-items-left");
 
@@ -24,17 +24,15 @@ const adjustText = function (text, maxPossibleLength = 20) {
     Set the image and the title in the right coloumn to the new selected image
     Remove class 'active' from old image
     Add class 'active' to new image selected
-    Update currentID to id of crrent image
+    Update currentID to id of current selected image
 */
 const changeImage = function (newID) {
     const item = myJson[newID];
     document.querySelector(".image").setAttribute("src", item.previewImage);
     document.getElementsByName("imageName")[0].value = item.title;
-    const olditem = document.getElementById(currentID);
-    olditem.classList.remove("active");
-    const newitem = document.getElementById(item.id);
-    newitem.classList.add("active");
-    currentID = item.id;
+    document.getElementById(currentID).classList.remove("active");
+    document.getElementById(newID).classList.add("active");
+    currentID = newID;
 }
 
 /*
@@ -42,17 +40,17 @@ const changeImage = function (newID) {
     Insert new elemet to left column with image and title
     Add 'click'-eventListner to each element and redirect the event to chageImage
 */
+let temp = 0;
 myJson.forEach((item) => {
     let insertItem = document.createElement("div");
     insertItem.classList.add("grid-item-left");
-    insertItem.setAttribute("id", item.id);
+    insertItem.setAttribute("id", temp++);
     let content = `
         <img src= ${item.previewImage} />
         <p> ${adjustText(item.title)} </p>
     `;
-
-    insertItem.addEventListener("click", () => {
-        changeImage(item.id);
+    insertItem.addEventListener("click", function () {
+        changeImage(parseInt(this.getAttribute("id")));
     }
         , false);
 
@@ -74,6 +72,7 @@ document.body.addEventListener("keydown", (event) => {
     let newID;
     if (event.key === "ArrowDown") {
         newID = (currentID + 1) % totalItems;
+        changeImage(newID);
     }
     else if (event.key === "ArrowUp") {
         if (currentID === 0) {
@@ -81,8 +80,8 @@ document.body.addEventListener("keydown", (event) => {
         } else {
             newID = (currentID - 1) % totalItems;
         }
+        changeImage(newID);
     }
-    changeImage(newID);
 });
 
 /*
