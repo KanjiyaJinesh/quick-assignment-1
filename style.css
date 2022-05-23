@@ -27,6 +27,7 @@ header h1 {
     padding: 10px 10px;
     border-radius: 10px;
     margin-bottom: 5px;
+    overflow: hidden;
 }
 
 .grid-item-left:hover {

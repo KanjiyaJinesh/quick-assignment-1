@@ -90,7 +90,7 @@ document.body.addEventListener("keydown", (event) => {
     And reflet the updated imageTitle in the image list in the left coloumn
 */
 const imageText = document.getElementsByName("imageName");
-imageText[0].addEventListener('change', () => {
+imageText[0].addEventListener('input', () => {
     myJson[currentID].title = imageText[0].value;
     document.querySelector(".active p").innerText = adjustText(imageText[0].value);
 });
