@@ -7,7 +7,6 @@ header h1 {
     text-align: center;
     margin: 1em 0;
     font-family: "Oswald", sans-serif;
-
 }
 
 .maincontent {
@@ -70,4 +69,41 @@ input {
     font-size: 20px;
     align-content: center;
     text-align: center;
+}
+
+@media only screen and (max-width: 1200px) {
+    .grid-contents {
+        grid-template-columns: 300px auto;
+    }
+
+    .image-container img {
+        width: 47vw;
+        height: 58vw;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .grid-contents {
+        grid-template-columns: 400px;
+        grid-template-rows: 40vh auto;
+    }
+
+    .grid-item-left {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .image-container img {
+        width: 400px;
+        height: 600px;
+        border-radius: 10px;
+    }
+
+    .grid-items-left {
+        overflow: scroll;
+        border: 2px solid rgb(139, 139, 139);
+        border-radius: 10px;
+        padding-top: 10px;
+        padding-bottom: 5px;
+    }
 }
